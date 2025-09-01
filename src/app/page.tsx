@@ -7,7 +7,7 @@ import SchoolCard from '@/components/SchoolCard';
 import { schoolsData, getSchoolsByLocation } from '@/data/schools';
 import { getRecentlyViewedSchools, getUserLocation } from '@/utils/storage';
 import { School } from '@/types';
-import { Star, MapPin, Award, Users, Globe, ArrowRight, Play } from 'lucide-react';
+import { Star, MapPin, Award, ArrowRight, Play } from 'lucide-react';
 import Link from 'next/link';
 
 export default function HomePage() {
@@ -142,7 +142,7 @@ export default function HomePage() {
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Choose SchoolDekho?</h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                We provide comprehensive information to help you make the best decision for your child's education
+                We provide comprehensive information to help you make the best decision for your child&apos;s education
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

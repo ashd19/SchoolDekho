@@ -1,17 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Header from '@/components/Header';
 import SchoolCard from '@/components/SchoolCard';
 import FilterSidebar from '@/components/FilterSidebar';
 import { schoolsData, filterSchools, getSchoolsByLocation } from '@/data/schools';
 import { FilterOptions, School } from '@/types';
-import { Filter, MapPin, Search, Grid, List, SortAsc, SortDesc } from 'lucide-react';
+import { Filter, Search, Grid, List, SortAsc, SortDesc } from 'lucide-react';
 import { getUserLocation } from '@/utils/storage';
 import { addSearchHistory } from '@/utils/storage';
 
-export default function SearchPage() {
+function SearchPageContent() {
   const searchParams = useSearchParams();
   const [schools, setSchools] = useState<School[]>([]);
   const [filteredSchools, setFilteredSchools] = useState<School[]>([]);
@@ -62,8 +62,8 @@ export default function SearchPage() {
     
     // Apply sorting
     result = result.sort((a, b) => {
-      let aValue: number;
-      let bValue: number;
+      let aValue: number | string;
+      let bValue: number | string;
       
       switch (sortBy) {
         case 'rating':
@@ -193,7 +193,7 @@ export default function SearchPage() {
                     <span className="text-sm text-gray-600">Sort by:</span>
                     <select
                       value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value as any)}
+                      onChange={(e) => setSortBy(e.target.value as 'rating' | 'fees' | 'distance')}
                       className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
                       <option value="rating">Rating</option>
@@ -265,5 +265,13 @@ export default function SearchPage() {
         onClearFilters={handleClearFilters}
       />
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchPageContent />
+    </Suspense>
   );
 }

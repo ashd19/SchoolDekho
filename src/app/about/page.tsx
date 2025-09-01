@@ -73,7 +73,7 @@ export default function AboutPage() {
               About SchoolDekho
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              We're on a mission to help parents find the perfect school for their children 
+              We&apos;re on a mission to help parents find the perfect school for their children 
               by providing comprehensive, verified information about schools across India.
             </p>
             <div className="flex flex-wrap justify-center gap-8">
@@ -100,7 +100,7 @@ export default function AboutPage() {
               <p className="text-lg text-gray-600">
                 Our platform connects parents with detailed school profiles, authentic reviews, 
                 virtual tours, and powerful search tools to help them make informed decisions 
-                about their child's education.
+                about their child&apos;s education.
               </p>
             </div>
           </div>
@@ -112,7 +112,7 @@ export default function AboutPage() {
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Choose SchoolDekho?</h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                We provide everything you need to make the best decision for your child's education
+                We provide everything you need to make the best decision for your child&apos;s education
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -175,7 +175,7 @@ export default function AboutPage() {
                   <Heart className="w-8 h-8 text-green-600" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Care</h3>
-                <p className="text-gray-600">Caring about every child's educational journey</p>
+                <p className="text-gray-600">Caring about every child&apos;s educational journey</p>
               </div>
               <div className="text-center">
                 <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -201,7 +201,7 @@ export default function AboutPage() {
             <h2 className="text-3xl font-bold mb-4">Ready to Find Your Perfect School?</h2>
             <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
               Join thousands of parents who have found the ideal school for their children 
-              using SchoolDekho's comprehensive platform.
+              using SchoolDekho&apos;s comprehensive platform.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link

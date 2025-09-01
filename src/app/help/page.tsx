@@ -199,7 +199,7 @@ export default function HelpPage() {
                 className="p-6 bg-purple-50 rounded-lg text-center hover:bg-purple-100 transition-colors"
               >
                 <h3 className="text-lg font-semibold text-purple-900 mb-2">Recently Viewed</h3>
-                <p className="text-purple-700">See schools you've recently explored</p>
+                <p className="text-purple-700">See schools you&apos;ve recently explored</p>
               </Link>
               
               <Link
@@ -218,7 +218,7 @@ export default function HelpPage() {
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold mb-4">Still Need Help?</h2>
             <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
-              Can't find what you're looking for? Our support team is here to help you.
+              Can&apos;t find what you&apos;re looking for? Our support team is here to help you.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link

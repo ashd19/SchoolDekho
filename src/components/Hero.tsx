@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Search, MapPin, Filter, ArrowRight, Star, Users, Award, Globe, School } from 'lucide-react';
+import { Search, MapPin, ArrowRight, Star, Users, Globe, School } from 'lucide-react';
 import { getUserLocation, searchLocation } from '@/utils/location';
 import { UserLocation } from '@/types';
 import { saveUserLocation } from '@/utils/storage';
@@ -9,7 +9,7 @@ import { saveUserLocation } from '@/utils/storage';
 export default function Hero() {
   const [searchQuery, setSearchQuery] = useState('');
   const [locationQuery, setLocationQuery] = useState('');
-  const [userLocation, setUserLocation] = useState<UserLocation | null>(null);
+  const [, setUserLocation] = useState<UserLocation | null>(null);
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
   const [locationSuggestions, setLocationSuggestions] = useState<Array<{display_name: string, lat: string, lon: string}>>([]);
   const [showLocationSuggestions, setShowLocationSuggestions] = useState(false);
@@ -92,7 +92,7 @@ export default function Hero() {
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Discover top schools across India with detailed information, reviews, and virtual tours. 
-            Make informed decisions for your child's education.
+            Make informed decisions for your child&apos;s education.
           </p>
 
           {/* Search form */}

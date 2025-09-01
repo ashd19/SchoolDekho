@@ -27,7 +27,7 @@ export const getUserLocation = (): Promise<UserLocation> => {
           });
         }
       },
-      (error) => {
+      (_error) => {
         reject(new Error('Unable to retrieve your location.'));
       },
       {
@@ -51,7 +51,7 @@ export const reverseGeocode = async (lat: number, lng: number): Promise<string> 
     }
     
     return `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-  } catch (error) {
+  } catch (_error) {
     return `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
   }
 };
@@ -63,7 +63,7 @@ export const searchLocation = async (query: string): Promise<Array<{display_name
     );
     const data = await response.json();
     return data;
-  } catch (error) {
+  } catch (_error) {
     return [];
   }
 };

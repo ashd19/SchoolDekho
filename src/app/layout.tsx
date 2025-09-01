@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "SchoolDekho - Find Your Perfect School in India",
-  description: "Discover top schools across India with detailed information, reviews, virtual tours, and comprehensive search filters. Make informed decisions for your child's education.",
+  description: "Discover top schools across India with detailed information, reviews, virtual tours, and comprehensive search filters. Make informed decisions for your child&apos;s education.",
   keywords: "schools in India, CBSE schools, ICSE schools, international schools, boarding schools, school search, education, school reviews",
   authors: [{ name: "SchoolDekho Team" }],
   openGraph: {

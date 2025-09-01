@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import SchoolCard from '@/components/SchoolCard';
-import { schoolsData, getSchoolsByLocation } from '@/data/schools';
+import { getSchoolsByLocation } from '@/data/schools';
 import { getUserLocation } from '@/utils/storage';
 import { School } from '@/types';
 import { MapPin, Navigation, ArrowLeft, RefreshCw } from 'lucide-react';
@@ -16,45 +16,89 @@ export default function NearbySchoolsPage() {
   const [radius, setRadius] = useState(50);
 
   useEffect(() => {
-    loadNearbySchools();
-  }, []);
-
-  const loadNearbySchools = async () => {
-    setIsLoading(true);
-    
-    // Try to get saved location first
-    let location = getUserLocation();
-    
-    if (!location) {
-      // Try to get current location
-      try {
-        if (navigator.geolocation) {
-          const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(resolve, reject, {
-              enableHighAccuracy: true,
-              timeout: 10000,
-              maximumAge: 300000
+    const loadNearbySchoolsAsync = async () => {
+      setIsLoading(true);
+      
+      // Try to get saved location first
+      let location = getUserLocation();
+      
+      if (!location) {
+        // Try to get current location
+        try {
+          if (navigator.geolocation) {
+            const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+              navigator.geolocation.getCurrentPosition(resolve, reject, {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 300000
+              });
             });
-          });
-          
-          location = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-            address: `${position.coords.latitude.toFixed(6)}, ${position.coords.longitude.toFixed(6)}`
-          };
+            
+            location = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+              address: `${position.coords.latitude.toFixed(6)}, ${position.coords.longitude.toFixed(6)}`
+            };
+          }
+        } catch (error) {
+          console.error('Error getting location:', error);
         }
-      } catch (error) {
-        console.error('Error getting location:', error);
       }
-    }
 
-    if (location) {
-      setUserLocation(location);
-      const nearby = getSchoolsByLocation(location.lat, location.lng, radius);
-      setNearbySchools(nearby);
-    }
+      if (location) {
+        setUserLocation(location);
+        const nearby = getSchoolsByLocation(location.lat, location.lng, radius);
+        setNearbySchools(nearby);
+      }
+      
+      setIsLoading(false);
+    };
     
-    setIsLoading(false);
+    loadNearbySchoolsAsync();
+  }, [radius]);
+
+
+
+  const handleRefresh = () => {
+    const loadNearbySchoolsAsync = async () => {
+      setIsLoading(true);
+      
+      // Try to get saved location first
+      let location = getUserLocation();
+      
+      if (!location) {
+        // Try to get current location
+        try {
+          if (navigator.geolocation) {
+            const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+              navigator.geolocation.getCurrentPosition(resolve, reject, {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 300000
+              });
+            });
+            
+            location = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+              address: `${position.coords.latitude.toFixed(6)}, ${position.coords.longitude.toFixed(6)}`
+            };
+          }
+        } catch (error) {
+          console.error('Error getting location:', error);
+        }
+      }
+
+      if (location) {
+        setUserLocation(location);
+        const nearby = getSchoolsByLocation(location.lat, location.lng, radius);
+        setNearbySchools(nearby);
+      }
+      
+      setIsLoading(false);
+    };
+    
+    loadNearbySchoolsAsync();
   };
 
   const handleRadiusChange = (newRadius: number) => {
@@ -122,7 +166,7 @@ export default function NearbySchoolsPage() {
                     </select>
                   </div>
                   <button
-                    onClick={loadNearbySchools}
+                    onClick={handleRefresh}
                     className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
                   >
                     <RefreshCw className="w-4 h-4" />
@@ -183,7 +227,7 @@ export default function NearbySchoolsPage() {
               We need your location to show schools near you. Please enable location access and try again.
             </p>
             <button
-              onClick={loadNearbySchools}
+              onClick={handleRefresh}
               className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
             >
               Try Again

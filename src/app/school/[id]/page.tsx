@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Header from '@/components/Header';
 import { schoolsData } from '@/data/schools';
-import { School, Review } from '@/types';
+import { School } from '@/types';
 import { addRecentlyViewed } from '@/utils/storage';
 import { formatDistance } from '@/utils/location';
 import { 
@@ -19,10 +19,8 @@ import {
   Calendar,
   Award,
   CheckCircle,
-  Play,
   Heart,
   Share2,
-  ArrowLeft,
   ExternalLink
 } from 'lucide-react';
 import Link from 'next/link';
@@ -234,7 +232,7 @@ export default function SchoolDetailPage() {
                   ].map((tab) => (
                     <button
                       key={tab.id}
-                      onClick={() => setActiveTab(tab.id as any)}
+                      onClick={() => setActiveTab(tab.id as 'overview' | 'reviews' | 'gallery' | 'virtual-tour')}
                       className={`py-4 px-1 border-b-2 font-medium text-sm ${
                         activeTab === tab.id
                           ? 'border-blue-500 text-blue-600'
@@ -336,7 +334,7 @@ export default function SchoolDetailPage() {
                               <div className="flex items-center space-x-2 mb-1">
                                 <span className="font-medium text-gray-900">{review.userName}</span>
                                 {review.verified && (
-                                  <CheckCircle className="w-4 h-4 text-blue-500" title="Verified Review" />
+                                  <CheckCircle className="w-4 h-4 text-blue-500" />
                                 )}
                               </div>
                               <div className="flex items-center space-x-1">

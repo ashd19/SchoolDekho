@@ -9,7 +9,7 @@ import { FilterOptions, School } from '@/types';
 import { Filter, Grid, List, SortAsc, SortDesc, Search } from 'lucide-react';
 
 export default function SchoolsPage() {
-  const [schools, setSchools] = useState<School[]>(schoolsData);
+
   const [filteredSchools, setFilteredSchools] = useState<School[]>(schoolsData);
   const [filters, setFilters] = useState<FilterOptions>({});
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -37,8 +37,8 @@ export default function SchoolsPage() {
     
     // Apply sorting
     result = result.sort((a, b) => {
-      let aValue: any;
-      let bValue: any;
+      let aValue: number | string;
+      let bValue: number | string;
       
       switch (sortBy) {
         case 'rating':
@@ -58,10 +58,10 @@ export default function SchoolsPage() {
           bValue = b.rating;
       }
       
-      if (typeof aValue === 'string') {
-        aValue = aValue.toLowerCase();
-        bValue = bValue.toLowerCase();
-      }
+          if (typeof aValue === 'string' && typeof bValue === 'string') {
+      aValue = aValue.toLowerCase();
+      bValue = bValue.toLowerCase();
+    }
       
       if (sortOrder === 'asc') {
         return aValue > bValue ? 1 : -1;
@@ -154,7 +154,7 @@ export default function SchoolsPage() {
                     <span className="text-sm text-gray-600">Sort by:</span>
                     <select
                       value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value as any)}
+                      onChange={(e) => setSortBy(e.target.value as 'rating' | 'fees' | 'name')}
                       className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
                       <option value="rating">Rating</option>

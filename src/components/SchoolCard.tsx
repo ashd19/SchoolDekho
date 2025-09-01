@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Star, MapPin, Clock, Phone, Globe, Eye, Heart, Share2 } from 'lucide-react';
+import { Star, MapPin, Clock, Phone, Globe, Eye, Heart, Share2, Users, Award, Plus } from 'lucide-react';
 import { School } from '@/types';
 import { formatDistance } from '@/utils/location';
-import { addRecentlyViewed } from '@/utils/storage';
+import { addRecentlyViewed, addToFavorites, removeFromFavorites, isFavorite } from '@/utils/storage';
 
 interface SchoolCardProps {
   school: School;
@@ -17,11 +17,33 @@ export default function SchoolCard({ school, showDistance = false }: SchoolCardP
   const [isLiked, setIsLiked] = useState(false);
   const [imageError, setImageError] = useState(false);
 
+  useEffect(() => {
+    // Check if school is in favorites on component mount
+    const checkFavoriteStatus = () => {
+      const favoriteStatus = isFavorite(school.id);
+      setIsLiked(favoriteStatus);
+    };
+    
+    checkFavoriteStatus();
+  }, [school.id]);
+
   const handleCardClick = () => {
     addRecentlyViewed(school.id);
   };
 
-  const handleShare = async () => {
+  const handleFavoriteToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isLiked) {
+      removeFromFavorites(school.id);
+      setIsLiked(false);
+    } else {
+      addToFavorites(school.id);
+      setIsLiked(true);
+    }
+  };
+
+  const handleShare = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (navigator.share) {
       try {
         await navigator.share({
@@ -58,6 +80,28 @@ export default function SchoolCard({ school, showDistance = false }: SchoolCardP
     ));
   };
 
+  const getSchoolTypeBadge = () => {
+    if (school.details.boarding && school.details.daySchool) {
+      return { text: 'Boarding & Day', color: 'bg-purple-500' };
+    } else if (school.details.boarding) {
+      return { text: 'Boarding', color: 'bg-blue-500' };
+    } else if (school.details.daySchool) {
+      return { text: 'Day School', color: 'bg-green-500' };
+    }
+    return null;
+  };
+
+  const getGenderBadge = () => {
+    if (school.details.gender === 'Boys') {
+      return { text: 'Boys', color: 'bg-blue-500' };
+    } else if (school.details.gender === 'Girls') {
+      return { text: 'Girls', color: 'bg-pink-500' };
+    } else if (school.details.gender === 'Co-ed') {
+      return { text: 'Co-ed', color: 'bg-purple-500' };
+    }
+    return null;
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-200">
       {/* Image section */}
@@ -86,35 +130,43 @@ export default function SchoolCard({ school, showDistance = false }: SchoolCardP
         {/* Action buttons */}
         <div className="absolute top-3 right-3 flex space-x-2">
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsLiked(!isLiked);
-            }}
+            onClick={handleFavoriteToggle}
             className={`p-2 rounded-full ${
               isLiked ? 'bg-red-500 text-white' : 'bg-white text-gray-600'
             } shadow-md hover:scale-105 transition-all`}
+            title={isLiked ? 'Remove from favorites' : 'Add to favorites'}
           >
             <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
           </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleShare();
-            }}
+          <Link
+            href={`/compare?add=${school.id}`}
             className="p-2 rounded-full bg-white text-gray-600 shadow-md hover:scale-105 transition-all"
+            title="Add to comparison"
+          >
+            <Plus className="w-4 h-4" />
+          </Link>
+          <button
+            onClick={handleShare}
+            className="p-2 rounded-full bg-white text-gray-600 shadow-md hover:scale-105 transition-all"
+            title="Share school"
           >
             <Share2 className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Admission status */}
-        {school.admissionOpen && (
-          <div className="absolute top-3 left-3">
+        {/* Status badges */}
+        <div className="absolute top-3 left-3 flex flex-col space-y-2">
+          {school.admissionOpen && (
             <span className="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
               Admission Open
             </span>
-          </div>
-        )}
+          )}
+          {getSchoolTypeBadge() && (
+            <span className={`${getSchoolTypeBadge()!.color} text-white px-2 py-1 rounded-full text-xs font-medium`}>
+              {getSchoolTypeBadge()!.text}
+            </span>
+          )}
+        </div>
 
         {/* Rating */}
         <div className="absolute bottom-3 left-3 bg-white bg-opacity-90 px-2 py-1 rounded-md">
@@ -138,7 +190,7 @@ export default function SchoolCard({ school, showDistance = false }: SchoolCardP
           >
             {school.name}
           </Link>
-          <div className="flex items-center justify-between mt-1">
+          <div className="flex items-center justify-between mt-2">
             <span className="text-sm text-blue-600 font-medium bg-blue-50 px-2 py-1 rounded">
               {school.details.type}
             </span>
@@ -148,6 +200,25 @@ export default function SchoolCard({ school, showDistance = false }: SchoolCardP
               </span>
             )}
           </div>
+        </div>
+
+        {/* Additional badges */}
+        <div className="flex flex-wrap gap-2 mb-3">
+          {getGenderBadge() && (
+            <span className={`${getGenderBadge()!.color} text-white px-2 py-1 rounded-full text-xs font-medium`}>
+              {getGenderBadge()!.text}
+            </span>
+          )}
+          {school.internationalStudents && (
+            <span className="bg-indigo-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+              International
+            </span>
+          )}
+          {school.specialNeeds && (
+            <span className="bg-orange-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+              Special Needs
+            </span>
+          )}
         </div>
 
         {/* Location */}
@@ -186,13 +257,26 @@ export default function SchoolCard({ school, showDistance = false }: SchoolCardP
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <div className="w-4 h-4 text-gray-500">👥</div>
+            <Users className="w-4 h-4 text-gray-500" />
             <div>
               <p className="text-xs text-gray-500">Students</p>
               <p className="text-sm font-medium text-gray-900">
                 {school.details.studentCount.toLocaleString()}
               </p>
             </div>
+          </div>
+        </div>
+
+        {/* Established year and achievements */}
+        <div className="mb-4">
+          <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
+            <span>Est. {school.details.established}</span>
+            {school.achievements.length > 0 && (
+              <span className="flex items-center space-x-1">
+                <Award className="w-3 h-3 text-yellow-500" />
+                <span>{school.achievements.length} awards</span>
+              </span>
+            )}
           </div>
         </div>
 

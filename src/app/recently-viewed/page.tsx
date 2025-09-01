@@ -33,7 +33,7 @@ export default function RecentlyViewedPage() {
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">Recently Viewed Schools</h1>
               <p className="text-gray-600">
-                Schools you've recently explored on SchoolDekho
+                Schools you&apos;ve recently explored on SchoolDekho
               </p>
             </div>
             <Link

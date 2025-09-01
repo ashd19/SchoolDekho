@@ -43,8 +43,8 @@ export default function Header() {
   return (
     <header className="bg-white shadow-sm border-b">
       {/* Top bar */}
-      <div className="bg-blue-600 text-white py-2">
-        <div className="container mx-auto px-4 flex justify-between items-center text-sm">
+      <div className="bg-blue-600 h-12 text-white  font-bold py-2">
+        <div className="container mx-auto px-4 flex justify-between items-center text-xl">
           <div className="flex items-center space-x-6">
             <div className="flex items-center space-x-2">
               <Phone className="w-4 h-4" />
@@ -103,7 +103,26 @@ export default function Header() {
             </form>
           </div>
 
-          {/* Location and navigation */}
+          {/* Navigation */}
+          <nav className="hidden md:flex items-center space-x-6">
+            <Link href="/schools" className="text-gray-700 hover:text-blue-600 transition-colors">
+              All Schools
+            </Link>
+            <Link href="/nearby" className="text-gray-700 hover:text-blue-600 transition-colors">
+              Nearby
+            </Link>
+            <Link href="/favorites" className="text-gray-700 hover:text-blue-600 transition-colors">
+              Favorites
+            </Link>
+            <Link href="/compare" className="text-gray-700 hover:text-blue-600 transition-colors">
+              Compare
+            </Link>
+            <Link href="/recently-viewed" className="text-gray-700 hover:text-blue-600 transition-colors">
+              Recent
+            </Link>
+          </nav>
+
+          {/* Location and mobile menu */}
           <div className="flex items-center space-x-4">
             {/* Location */}
             <div className="hidden md:flex items-center space-x-2">
@@ -181,9 +200,26 @@ export default function Header() {
                   </button>
                 )}
               </div>
-              <Link href="/about" className="text-gray-700 hover:text-blue-600">
-                About Us
+              <Link href="/schools" className="text-gray-700 hover:text-blue-600">
+                All Schools
               </Link>
+              <Link href="/nearby" className="text-gray-700 hover:text-blue-600">
+                Nearby Schools
+              </Link>
+              <Link href="/favorites" className="text-gray-700 hover:text-blue-600">
+                Favorites
+              </Link>
+              <Link href="/compare" className="text-gray-700 hover:text-blue-600">
+                Compare Schools
+              </Link>
+              <Link href="/recently-viewed" className="text-gray-700 hover:text-blue-600">
+                Recently Viewed
+              </Link>
+              <div className="border-t pt-4">
+                <Link href="/about" className="text-gray-700 hover:text-blue-600">
+                  About Us
+                </Link>
+              </div>
               <Link href="/contact" className="text-gray-700 hover:text-blue-600">
                 Contact
               </Link>
